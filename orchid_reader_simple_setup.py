@@ -181,8 +181,9 @@ def get_proc_folders(outdir, sub_batches, batch_name):
     """
     # short circuit for the special case of only one sub batch
     if len(sub_batches) == 1:
-        return [(sub_batches[0][0], sub_batches[0][1], sub_batches[0][2],
-                 sub_batches[0][3], (batch_name, os.path.join(outdir, batch_name)))]
+        temp = sub_batches[0]
+        return [(temp[0], temp[1], temp[2], temp[3],
+                (batch_name, os.path.join(outdir, batch_name)))]
     # otherwise there is more than one batch, name them
     out_batches = []
     for ind, batch in enumerate(sub_batches):
