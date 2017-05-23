@@ -1,5 +1,6 @@
 """File that contains the variables defining the various sets of runs where
 the array detector setup is different from default"""
+import detector_setups as ds
 
 ###############################################################################
 # information for breaking the batches up based on detector setup
@@ -19,10 +20,10 @@ NO_HE_RUN_PATTERNS = ["Sept14_0000.dat", "Sept14_0001.dat", "Sept14_0002.dat",
                       "Sept19_0000.dat", "Sept19_0001.dat"]
 
 # list of detector setups for convenient access
-DET_SETUPS = [ds.DEFAULT_SETUP, ds.CEBR_SETUP, ds.NO_HE_SETUP]
+EXCEPTION_DATA = [ds.DEFAULT_SETUP, ds.CEBR_SETUP, ds.NO_HE_SETUP]
 
 # list of exception pattern names in the same order as setups, including def
-EXCEP_NAMES = ["Default", "CeBr3", "No_3He"]
+EXCEPTION_NAME = ["Default", "CeBr3", "No_3He"]
 
 # list of exception patterns in the same order as the det setups, minus default
-EXCEP_PATTERNS = [CEBR_RUN_PATTERNS, NO_HE_RUN_PATTERNS]
+EXCEPTION_PATTERN = [CEBR_RUN_PATTERNS, NO_HE_RUN_PATTERNS]
