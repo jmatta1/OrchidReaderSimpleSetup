@@ -1,7 +1,7 @@
 """This file contains functions and global constants that allow known cases
 that need special handling to be addressed"""
-import position_changes as pc
-import setup_chances as sc
+import orsslib.position_changes as pc
+import orsslib.setup_changes as sc
 
 def split_sub_batches_det_setup(file_list):
     """Takes a file_list and splits runs if they contain the patterns

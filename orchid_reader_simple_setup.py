@@ -5,7 +5,7 @@ import sys
 import os
 import datetime
 import struct
-import sub_batch_handling as sb_hnd
+import orsslib.sub_batch_handling as sb_hnd
 
 FILE_HEADER_SIZE = 4096
 BUFFER_SIZE = 2097152
@@ -35,6 +35,10 @@ def main():
     sub_batches = get_proc_folders(outdir, sub_batches, batch_name)
     # now, for each sub batch, create the folder and the files to run the job
     batch_files = build_batch_scripts(sub_batches)
+    for line in batch_files:
+        for elem in line:
+            print elem
+        print "+++++++++++++++++++++++++++++++++++++++++++++++++++"
 
 
 def build_batch_scripts(sub_batches):

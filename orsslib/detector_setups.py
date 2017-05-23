@@ -1,7 +1,7 @@
 """This file contains the definition of all the detector configurations the
 array has supported"""
 import copy
-from detector_config import ArraySetup, DetectorSetup
+from orsslib.detector_config import ArraySetup, DetectorSetup
 # Below are the detector setup creations, For each new type of detector I
 # create a detector of the appropriate type and position and digitizer and mpod
 # channels and add it, I then modify it to the correct position and electronic

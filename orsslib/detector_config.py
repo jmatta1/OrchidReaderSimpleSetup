@@ -312,4 +312,3 @@ class ArraySetup(object):
             else:
                 print "Detector number not in array setup!"
             ans = raw_input("Remove Another Detector (y,N)?> ")
-

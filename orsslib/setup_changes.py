@@ -1,6 +1,6 @@
 """File that contains the variables defining the various sets of runs where
 the array detector setup is different from default"""
-import detector_setups as ds
+import orsslib.detector_setups as ds
 
 ###############################################################################
 # information for breaking the batches up based on detector setup
