@@ -1,6 +1,6 @@
 """This file contains the definition of the detector and array setup classes"""
 import os
-
+import orsslib.input_sanitizer as inp
 
 COL_HEADERS = """Column Headings:
  0 - detector number, not "slot number" but instead a unique detector ID
@@ -143,30 +143,29 @@ class DetectorSetup(object):
         """
         is_good = 'n'
         while is_good in ['n', 'N']:
-            brd = int(raw_input("New Digitizer Board Number?> "))
-            chan = int(raw_input("New Digitizer Channel Number?> "))
+            brd = inp.get_int("New Digitizer Board Number")
+            chan = inp.get_int("New Digitizer Channel Number")
             temp = [(brd, chan)]
-            brd = int(raw_input("New MPOD Board Number?> "))
-            chan = int(raw_input("New MPOD Channel Number?> "))
+            brd = inp.get_int("New MPOD Board Number")
+            chan = inp.get_int("New MPOD Channel Number")
             temp.append((brd, chan))
-            xoff = float(raw_input("New X Offset?> "))
-            yoff = float(raw_input("New Y Offset?> "))
-            zoff = float(raw_input("New Z Offset?> "))
+            xoff = inp.get_float("New X Offset")
+            yoff = inp.get_float("New Y Offset")
+            zoff = inp.get_float("New Z Offset")
             temp.append((xoff, yoff, zoff))
             print "Known Detector Types are: NaI, LS, CeBr3, HeMod, HeUnmod"
-            new_type = raw_input("New Detector Type?> ")
+            new_type = inp.get_str("New Detector Type")
             temp.append(new_type)
-            out_str = "New Energy Threshold for PSD Proj?> "
-            en_thresh = float(raw_input(out_str))
-            out_str = "New PSD Threshold for Energy Proj?> "
-            psd_thresh = float(raw_input(out_str))
+            out_str = "New Energy Threshold for PSD Proj"
+            en_thresh = inp.get_float(out_str)
+            out_str = "New PSD Threshold for Energy Proj"
+            psd_thresh = inp.get_float(out_str)
             temp.append((int(en_thresh), psd_thresh))
             det_setup = DetectorSetup((temp[0], temp[1]), temp[2], temp[3],
                                       temp[4])
             os.system('clear')
             det_setup.print_self(detnum)
-            is_good = raw_input("Is this correct(Y,n)?> ")
-            if is_good not in ['n', 'N']:
+            if inp.get_yes_no("Is this correct", default_value=True):
                 return det_setup
 
     def get_user_value_changes(self, detnum):
@@ -179,33 +178,26 @@ class DetectorSetup(object):
             The detector number this detector is stored as
         """
         self.print_self(detnum)
-        ans = raw_input("Change Digitizer Setup(y/N)?> ")
-        if ans in ['y', 'Y']:
-            brd = int(raw_input("New Board Number?> "))
-            chan = int(raw_input("New Channel Number?> "))
+        if inp.get_yes_no("Change Digitizer Setup", default_value=False):
+            brd = inp.get_int("New Board Number")
+            chan = inp.get_int("New Channel Number")
             self.digi_pair = (brd, chan)
-        ans = raw_input("Change MPOD Setup(y/N)?> ")
-        if ans in ['y', 'Y']:
-            brd = int(raw_input("New Board Number?> "))
-            chan = int(raw_input("New Channel Number?> "))
+        if inp.get_yes_no("Change MPOD Setup", default_value=False):
+            brd = inp.get_int("New Board Number")
+            chan = inp.get_int("New Channel Number")
             self.mpod_pair = (brd, chan)
-        ans = raw_input("Change Detector Position Offset(y/N)?> ")
-        if ans in ['y', 'Y']:
-            xoff = float(raw_input("New X Offset?> "))
-            yoff = float(raw_input("New Y Offset?> "))
-            zoff = float(raw_input("New Z Offset?> "))
+        if inp.get_yes_no("Change Det. Position Offsets", default_value=False):
+            xoff = inp.get_float("New X Offset")
+            yoff = inp.get_float("New Y Offset")
+            zoff = inp.get_float("New Z Offset")
             self.pos_offset = (xoff, yoff, zoff)
-        ans = raw_input("Change Detector Type(y/N)?> ")
-        if ans in ['y', 'Y']:
+        if inp.get_yes_no("Change Detector Type", default_value=False):
             print "Known Types are: NaI, LS, CeBr3, HeMod, HeUnmod"
-            new_type = raw_input("New Detector Type?> ")
+            new_type = inp.get_str("New Detector Type")
             self.det_type = new_type
-        ans = raw_input("Change Projection Thresholds(y/N)?> ")
-        if ans in ['y', 'Y']:
-            out_str = "New Energy Threshold for PSD Proj?> "
-            en_thresh = float(raw_input(out_str))
-            out_str = "New PSD Threshold for Energy Proj?> "
-            psd_thresh = float(raw_input(out_str))
+        if inp.get_yes_no("Change Projection Thresholds", default_value=False):
+            en_thresh = inp.get_float("New Energy Threshold for PSD Proj")
+            psd_thresh = inp.get_float("New PSD Threshold for Energy Proj")
             self.thresh_pair = (int(en_thresh), psd_thresh)
 
 
@@ -257,58 +249,57 @@ class ArraySetup(object):
         os.system('clear')
         self.print_array_setup()
         print ""
-        ans = raw_input("Remove detectors from the array (y,N)?> ")
-        if ans in ['y', 'Y']:
+        if inp.get_yes_no("Remove dets from the array", default_value=False):
             self.get_removed_dets()
         os.system('clear')
         self.print_array_setup()
         print ""
-        ans = raw_input("Add detectors to the array (y,N)?> ")
-        if ans in ['y', 'Y']:
+        if inp.get_yes_no("Add dets to the array", default_value=False):
             self.get_added_dets()
         os.system('clear')
         self.print_array_setup()
         print ""
-        ans = raw_input("Modify detectors in the array (y,N)?> ")
-        if ans in ['y', 'Y']:
+        if inp.get_yes_no("Modify dets in the array", default_value=False):
             self.get_modded_dets()
 
     def get_modded_dets(self):
         """Asks the user to modify existing detectors"""
-        ans = 'y'
-        while ans in ['y', 'Y']:
+        ans = True
+        while ans:
             os.system('clear')
             self.print_array_setup()
-            val = int(raw_input("Detector to modify?> "))
+            val = inp.get_int("Detector to modify")
             if val in self.det_dict:
                 self.det_dict[val].get_user_value_changes(val)
             else:
                 print "Detector does not exist"
-            ans = raw_input("Modify Another Detector (y,N)?> ")
+            ans = inp.get_yes_no("Modify Another Detector",
+                                 default_value=False)
 
     def get_added_dets(self):
         """Asks the user to define new detectors"""
-        ans = 'y'
-        while ans in ['y', 'Y']:
+        ans = True
+        while ans:
             os.system('clear')
             self.print_array_setup()
-            val = int(raw_input("New Detector Number?> "))
+            val = inp.get_int("New Detector Number")
             if val in self.det_dict:
                 print "Detector number already exists!"
             else:
                 new_det = DetectorSetup.build_new_det(val)
                 self.det_dict[val] = new_det
-            ans = raw_input("Add Another Detector (y,N)?> ")
+            ans = inp.get_yes_no("Add Another Detector", default_value=False)
 
     def get_removed_dets(self):
         """Asks the user which detectors to remove"""
-        ans = "y"
-        while ans in ['y', 'Y']:
+        ans = True
+        while ans:
             os.system('clear')
             self.print_array_setup()
-            val = int(raw_input("Detector Number to Remove?> "))
+            val = inp.get_int("Detector Number to Remove")
             if val in self.det_dict:
                 del self.det_dict[val]
             else:
                 print "Detector number not in array setup!"
-            ans = raw_input("Remove Another Detector (y,N)?> ")
+            ans = inp.get_yes_no("Remove Another Detector",
+                                 default_value=False)

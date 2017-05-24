@@ -5,7 +5,8 @@ import sys
 import os
 import datetime
 import struct
-import orsslib.sub_batch_handling as sb_hnd
+from orsslib import sub_batch_handling as sb_hnd
+from orsslib import input_sanitizer as inp
 
 FILE_HEADER_SIZE = 4096
 BUFFER_SIZE = 2097152
@@ -23,7 +24,7 @@ def main():
     print "Input Directory is:", indir
     print "Base Output Directory is:", outdir
     print "\nIf this is incorrect use 'Ctrl+C' to stop execution"
-    _ = raw_input("Press Enter to continue...")
+    raw_input("Press Enter to continue...")
     # get the list of files and their header info
     print "Getting header info"
     file_list = get_and_sort_file_list(indir)
@@ -101,7 +102,7 @@ def write_qsub_script(script_name, folder):
     folder : str
         The path to the batch directory
     """
-    email = raw_input("What email should failures be sent to?> ")
+    email = inp.get_string("What email should failures be sent to")
     fmt_dict = {}
     fmt_dict["email"] = email
     fmt_dict["reader_dest"] = os.path.join(folder, "ORCHIDReader")
@@ -233,25 +234,30 @@ def check_sub_batch(batch, setup, times, pos):
     print SUB_BATCH_INFO.format(batch[0][0], batch[1][0], start_time,
                                 stop_time, setup[0], pos[1][0], pos[1][1])
     setup[1].print_array_setup()
-    ans = raw_input("\nDo you wish to edit the array position (y,N)?> ")
-    while ans in ['y', 'Y']:
-        xpos = float(raw_input("New X Position?> "))
-        ypos = float(raw_input("New X Position?> "))
+    print ""
+    ans = inp.get_yes_no("Do you wish to edit the array position (y,N)",
+                         default_value=False)
+    while ans:
+        xpos = inp.get_float("New X Position")
+        ypos = inp.get_float("New X Position")
         pos[0] = xpos
         pos[1] = ypos
         os.system('clear')
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
                                     stop_time, setup[0], pos[0], pos[1])
         setup[1].print_array_setup()
-        ans = raw_input("\nDo you wish to edit the array position (y,N)?> ")
-    ans = raw_input("\nDo you wish to edit the detector setup (y,N)?> ")
-    while ans in ['y', 'Y']:
+        ans = inp.get_yes_no("Do you wish to edit the array position (y,N)",
+                             default_value=False)
+    ans = inp.get_yes_no("Do you wish to edit the detector setup (y,N)",
+                             default_value=False)
+    while ans:
         setup[1].get_array_changes()
         os.system('clear')
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
                                     stop_time, setup[0], pos[0], pos[1])
         setup[1].print_array_setup()
-        ans = raw_input("\nDo you wish to edit the detector setup (y,N)?> ")
+        ans = inp.get_yes_no("Do you wish to edit the detector setup (y,N)",
+                             default_value=False)
 
 
 def split_into_subbatches(file_list):
