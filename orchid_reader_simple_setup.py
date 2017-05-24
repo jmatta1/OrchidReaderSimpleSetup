@@ -38,15 +38,17 @@ def main():
     batch_files = build_batch_scripts(sub_batches)
     # now create a small script that submits each of the queue scripts created
     sub_script_name = generate_sub_script(batch_files)
+    os.system("chmod -R 774 {0:s}".format(sub_script_name))
     os.system('clear')
     print "Created", len(batch_files), "batches to run"
     for number, batch in enumerate(batch_files):
         print "Batch #{0:d}".format(number)
-        print "  Output directory:", batch[4]
+        print "    Output directory:", batch[4]
         print "  Reader Config File:", batch[0]
-        print "  Input List File:", batch[2]
-        print "  Detector Setup File:", batch[1]
-        print "  Queue Script File:", batch[3]
+        print "     Input List File:", batch[2]
+        print " Detector Setup File:", batch[1]
+        print "   Queue Script File:", batch[3]
+        os.system("chmod -R 774 {0:s}".format(batch[4]))
     print ""
     print "Generated", sub_script_name
     print "  It will automatically submit the generated batch scripts"
