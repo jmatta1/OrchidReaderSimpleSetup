@@ -109,6 +109,8 @@ def build_batch_scripts(sub_batches):
         orchid raw data file list, queue sub script, and output directory
     """
     out_data = []
+    email = inp.get_str("What email should failures be sent to",
+                        default_value="mattajt@ornl.gov")
     # iterate through the list of sub batches, handling each individually
     for files, setup, _, pos, folder in sub_batches:
         # first ensure that the folder for the output exists
@@ -130,13 +132,13 @@ def build_batch_scripts(sub_batches):
         write_cfg_file(cfg_name, file_list_name, det_setup_name, folder[1],
                        pos)
         script_name = os.path.join(folder[1], "batch_script")
-        write_qsub_script(script_name, folder[1])
+        write_qsub_script(script_name, folder[1], email)
         out_data.append((cfg_name, det_setup_name, file_list_name, script_name,
                          folder[1]))
     return out_data
 
 
-def write_qsub_script(script_name, folder):
+def write_qsub_script(script_name, folder, email):
     """Takes the name of the output script and the batch directory and writes
     the qsub script there after asking the user for their email address
 
@@ -146,9 +148,9 @@ def write_qsub_script(script_name, folder):
         The path to the file the script will be written to
     folder : str
         The path to the batch directory
+    email : str
+        The email address to supply to the batch script(s)
     """
-    email = inp.get_str("What email should failures be sent to",
-                        default_value="mattajt@ornl.gov")
     fmt_dict = {}
     fmt_dict["email"] = email
     fmt_dict["reader_dest"] = os.path.join(folder, "ORCHIDReader")
@@ -251,7 +253,6 @@ def check_sub_batch_info(sub_batches):
         list of lists where each list is a sub-batch of file data
     """
     count = len(sub_batches)
-    print sub_batches
     for batch, setup, times, position in sub_batches:
         print DET_MOD_STR.format(count)
         check_sub_batch(batch, setup, times, position)
