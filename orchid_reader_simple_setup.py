@@ -36,14 +36,52 @@ def main():
     sub_batches = get_proc_folders(outdir, sub_batches, batch_name)
     # now, for each sub batch, create the folder and the files to run the job
     batch_files = build_batch_scripts(sub_batches)
-    for line in batch_files:
-        for elem in line:
-            print elem
-        print "+++++++++++++++++++++++++++++++++++++++++++++++++++"
+    # now create a small script that submits each of the queue scripts created
+    sub_script_name = generate_sub_script(batch_files)
+    os.system('clear')
+    print "Created", len(batch_files), "batches to run"
+    for number, batch in enumerate(batch_files):
+        print "Batch #{0:d}".format(number)
+        print "  Output directory:", batch[4]
+        print "  Reader Config File:", batch[0]
+        print "  Input List File:", batch[2]
+        print "  Detector Setup File:", batch[1]
+        print "  Queue Script File:", batch[3]
+    print ""
+    print "Generated", sub_script_name
+    print "  It will automatically submit the generated batch scripts
+
+
+def generate_sub_script(batch_files):
+    """This function takes the list of batch files and makes a simple batch
+    script that jumps into each directory it generated, and submits the output
+    script
+
+    Parameters
+    ----------
+    batch_files : list
+        A list of the files generated for batch processing, in order they are
+        Reader config file, Detector Setup File, Input List File, Queue Script
+        File, and finally, the Output Directory
+
+    Returns
+    -------
+    sub_script_name : str
+        Path to the script generated to submit the individual files to the
+        queue for processing
+    """
+    outfile = open("./submit_script",'w')
+    outfile.write("#!/usr/bin/bash")
+    for num, batch in enumerate(batch_files):
+        outfile.write("# Batch number: {0:d}\n".format(num))
+        outfile.write("cd {0:s}\n".format(batch[4]))
+        outfile.write("qsub ./batch_script\n")
+    outfile.close()
+    return "./submit_script"
 
 
 def build_batch_scripts(sub_batches):
-    """This script takes the list of sub batch data and uses it to create
+    """This function takes the list of sub batch data and uses it to create
     folders, orchid reader config files, and other material necessary to run
     the first step of the analysis chain.
 
@@ -430,11 +468,10 @@ def trim_trailing_slash(path):
 SCRIPT_TMPL = """
 #!/bin/bash
 #PBS -M {email:s}
-READER_LOCATION=/data1/prospect/jmatta1/ORCHIDReader
 READER_DEST={reader_dest:s}
 BATCH_DIR={batch_dir:s}
 # copy the source code for orchid reader
-cp -r $READER_LOCATION $READER_DEST
+cp -r $ORCHID_READER_SRC $READER_DEST
 cd $READER_DEST
 # build our copy
 make release
