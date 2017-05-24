@@ -548,7 +548,7 @@ ArrayYPosition={array_y_pos:4.1f} #Normal=74.0  Out of the way=279.0 or -124.0
 ProcessFirstBuffer = True
 
 # this is the nominal number of seconds to integrate files for
-HistIntegrationTime=600.0s
+HistIntegrationTime=600.0
 
 [EndConfig]
 """
