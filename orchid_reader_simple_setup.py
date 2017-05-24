@@ -140,7 +140,7 @@ def write_qsub_script(script_name, folder):
     folder : str
         The path to the batch directory
     """
-    email = inp.get_string("What email should failures be sent to")
+    email = inp.get_str("What email should failures be sent to")
     fmt_dict = {}
     fmt_dict["email"] = email
     fmt_dict["reader_dest"] = os.path.join(folder, "ORCHIDReader")
