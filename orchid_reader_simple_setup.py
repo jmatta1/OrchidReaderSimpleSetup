@@ -236,7 +236,6 @@ def get_proc_folders(outdir, sub_batches, batch_name):
     for ind, batch in enumerate(sub_batches):
         sub_name = "{0:s}_{1:d}".format(batch_name, ind)
         out_path = os.path.join(outdir, sub_name)
-        print batch
         out_batches.append((batch[0], batch[1], batch[2],
                             batch[3], (sub_name, out_path)))
     return out_batches
