@@ -134,10 +134,10 @@ def split_sub_batches_position(sub_batches):
                 if len(curr_batch) > 0:
                     batch_sets.append((curr_batch, setup, dates,
                                        [prev_name,
-                                        pc.EXCEPTION_DATA[prev_pos]]))
+                                        list(pc.EXCEPTION_DATA[prev_pos]])))
                 prev_pos = curr_pos
                 prev_name = curr_name
                 curr_batch = [fdat]
         batch_sets.append((curr_batch, setup, dates,
-                           [curr_name, pc.EXCEPTION_DATA[curr_pos]]))
+                           [curr_name, list(pc.EXCEPTION_DATA[curr_pos]])))
     return batch_sets
