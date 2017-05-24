@@ -73,7 +73,11 @@ def generate_sub_script(batch_files):
         Path to the script generated to submit the individual files to the
         queue for processing
     """
-    outfile = open("./submit_script", 'w')
+    outfile = None
+    if inp.get_yes_no("Append to existing submit_script", default_value=True):
+        outfile = open("./submit_script", 'a')
+    else:
+        outfile = open("./submit_script", 'w')
     outfile.write("#!/usr/bin/bash\n")
     for num, batch in enumerate(batch_files):
         outfile.write("# Batch number: {0:d}\n".format(num))
@@ -143,7 +147,8 @@ def write_qsub_script(script_name, folder):
     folder : str
         The path to the batch directory
     """
-    email = inp.get_str("What email should failures be sent to")
+    email = inp.get_str("What email should failures be sent to",
+                        default_value="mattajt@ornl.gov")
     fmt_dict = {}
     fmt_dict["email"] = email
     fmt_dict["reader_dest"] = os.path.join(folder, "ORCHIDReader")
