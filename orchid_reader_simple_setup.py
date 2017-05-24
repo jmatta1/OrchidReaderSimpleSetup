@@ -40,7 +40,8 @@ def main():
     sub_script_name = generate_sub_script(batch_files)
     os.system("chmod -R 774 {0:s}".format(sub_script_name))
     os.system('clear')
-    print "Created", len(batch_files), "batches to run"
+    out_str = ("batches to run" if len(batch_files) == 0 else "batch to run")
+    print "Created", len(batch_files), out_str
     for number, batch in enumerate(batch_files):
         print "Batch #{0:d}".format(number)
         print "    Output directory:", batch[4]
@@ -73,7 +74,7 @@ def generate_sub_script(batch_files):
         queue for processing
     """
     outfile = open("./submit_script", 'w')
-    outfile.write("#!/usr/bin/bash")
+    outfile.write("#!/usr/bin/bash\n")
     for num, batch in enumerate(batch_files):
         outfile.write("# Batch number: {0:d}\n".format(num))
         outfile.write("cd {0:s}\n".format(batch[4]))
