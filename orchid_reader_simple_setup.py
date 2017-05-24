@@ -480,7 +480,7 @@ make release
 cd $BATCH_DIR
 cp $READER_DEST/orchidReader ./orchidReader
 # after moving our copy to the primary dir, run it
-./orchidReader config_file
+./orchidReader batch_cfg
 chmod -R 774 $BATCH_DIR
 # delete our copy of ORCHID Reader
 rm -rf $READER_DEST
