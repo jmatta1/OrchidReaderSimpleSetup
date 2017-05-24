@@ -17,11 +17,20 @@ SURVEYING_PATTERNS = ["May10_2017_0002.dat", "May11_2017_0000.dat",
                       "May19_2017_0000.dat", "May21_2017_0000.dat",
                       "May22_2017_0000.dat", "May22_2017_0001.dat"]
 
+# list of the file name patterns that match when the array was moved in order
+# to facilitate scanning of the magnetic field in the area that PROSPECT will
+# occupy
+MAGNET_SCAN_PATTERNS = ["Mar29_2017_moved_0000", "Mar24_2017_SecPos_0000"
+                        "Mar24_2017_SecPos_0001"]
+
 # list of array positions for the time series runs
-EXCEPTION_DATA = [(142.0, 74.0), (234.0, 279.0), (165.0, -124.0)]
+EXCEPTION_DATA = [(142.0, 74.0), (234.0, 279.0), (165.0, -124.0),
+                  (142.0, 156.0)]
 
 # list of names for the array positions
-EXCEPTION_NAME = ["Default", "PastRxWall", "CloseToColdSrcCtrlRoom"]
+EXCEPTION_NAME = ["Default", "PastRxWall", "CloseToColdSrcCtrlRoom",
+                  "MovedForBFieldMeasurements"]
 
 # list of position exception patterns (deliberately sans the default)
-EXCEPTION_PATTERN = [PAST_RX_WALL_PATTERNS, SURVEYING_PATTERNS]
+EXCEPTION_PATTERN = [PAST_RX_WALL_PATTERNS, SURVEYING_PATTERNS,
+                     MAGNET_SCAN_PATTERNS]
