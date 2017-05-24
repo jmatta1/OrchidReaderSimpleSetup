@@ -49,7 +49,7 @@ def main():
         print "  Queue Script File:", batch[3]
     print ""
     print "Generated", sub_script_name
-    print "  It will automatically submit the generated batch scripts
+    print "  It will automatically submit the generated batch scripts"
 
 
 def generate_sub_script(batch_files):
@@ -70,7 +70,7 @@ def generate_sub_script(batch_files):
         Path to the script generated to submit the individual files to the
         queue for processing
     """
-    outfile = open("./submit_script",'w')
+    outfile = open("./submit_script", 'w')
     outfile.write("#!/usr/bin/bash")
     for num, batch in enumerate(batch_files):
         outfile.write("# Batch number: {0:d}\n".format(num))
@@ -222,7 +222,7 @@ def get_proc_folders(outdir, sub_batches, batch_name):
     if len(sub_batches) == 1:
         temp = sub_batches[0]
         return [(temp[0], temp[1], temp[2], temp[3],
-                (batch_name, os.path.join(outdir, batch_name)))]
+                 (batch_name, os.path.join(outdir, batch_name)))]
     # otherwise there is more than one batch, name them
     out_batches = []
     for ind, batch in enumerate(sub_batches):
@@ -287,7 +287,7 @@ def check_sub_batch(batch, setup, times, pos):
         ans = inp.get_yes_no("Do you wish to edit the array position (y,N)",
                              default_value=False)
     ans = inp.get_yes_no("Do you wish to edit the detector setup (y,N)",
-                             default_value=False)
+                         default_value=False)
     while ans:
         setup[1].get_array_changes()
         os.system('clear')

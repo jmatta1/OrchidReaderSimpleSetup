@@ -276,7 +276,7 @@ def get_yes_no(prompt, default_value=None):
         return value
 
 
-def get_string(prompt, default_value=None):
+def get_str(prompt, default_value=None):
     """Function to get a boolean from the command line
 
     Parameters
