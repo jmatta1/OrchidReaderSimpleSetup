@@ -109,8 +109,7 @@ def build_batch_scripts(sub_batches):
         orchid raw data file list, queue sub script, and output directory
     """
     out_data = []
-    email = inp.get_str("What email should failures be sent to",
-                        default_value="mattajt@ornl.gov")
+    email = inp.get_str("What email should failures be sent to")
     # iterate through the list of sub batches, handling each individually
     for files, setup, _, pos, folder in sub_batches:
         # first ensure that the folder for the output exists
