@@ -78,7 +78,7 @@ def generate_sub_script(batch_files):
         outfile = open("./submit_script", 'a')
     else:
         outfile = open("./submit_script", 'w')
-    outfile.write("#!/usr/bin/bash\n")
+        outfile.write("#!/usr/bin/bash\n")
     for num, batch in enumerate(batch_files):
         outfile.write("# Batch number: {0:d}\n".format(num))
         outfile.write("cd {0:s}\n".format(batch[4]))
@@ -303,6 +303,7 @@ def check_sub_batch(batch, setup, times, pos):
         setup[1].print_array_setup()
         ans = inp.get_yes_no("Do you wish to edit the detector setup",
                              default_value=False)
+
 
 def split_into_subbatches(file_list):
     """Takes a list of files and the special handling data and figures out how
