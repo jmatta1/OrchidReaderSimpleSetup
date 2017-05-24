@@ -273,30 +273,29 @@ def check_sub_batch(batch, setup, times, pos):
                                 stop_time, setup[0], pos[1][0], pos[1][1])
     setup[1].print_array_setup()
     print ""
-    ans = inp.get_yes_no("Do you wish to edit the array position (y,N)",
+    ans = inp.get_yes_no("Do you wish to edit the array position",
                          default_value=False)
     while ans:
         xpos = inp.get_float("New X Position")
         ypos = inp.get_float("New X Position")
-        pos[0] = xpos
-        pos[1] = ypos
+        pos[1][0] = xpos
+        pos[1][1] = ypos
         os.system('clear')
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
                                     stop_time, setup[0], pos[0], pos[1])
         setup[1].print_array_setup()
-        ans = inp.get_yes_no("Do you wish to edit the array position (y,N)",
+        ans = inp.get_yes_no("Do you wish to edit the array position",
                              default_value=False)
-    ans = inp.get_yes_no("Do you wish to edit the detector setup (y,N)",
+    ans = inp.get_yes_no("Do you wish to edit the detector setup",
                          default_value=False)
     while ans:
         setup[1].get_array_changes()
         os.system('clear')
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
-                                    stop_time, setup[0], pos[0], pos[1])
+                                    stop_time, setup[0], pos[1][0], pos[1][1])
         setup[1].print_array_setup()
-        ans = inp.get_yes_no("Do you wish to edit the detector setup (y,N)",
+        ans = inp.get_yes_no("Do you wish to edit the detector setup",
                              default_value=False)
-
 
 def split_into_subbatches(file_list):
     """Takes a list of files and the special handling data and figures out how
