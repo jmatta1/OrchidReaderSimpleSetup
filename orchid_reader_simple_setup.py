@@ -276,7 +276,7 @@ def check_sub_batch(batch, setup, times, pos):
     """
     start_time = times[0].strftime("%Y-%m-%d %H:%M:%S.%f")
     stop_time = times[1].strftime("%Y-%m-%d %H:%M:%S.%f")
-    print SUB_BATCH_INFO.format(batch[0][0], batch[1][0], start_time,
+    print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
                                 stop_time, setup[0], pos[1][0], pos[1][1])
     setup[1].print_array_setup()
     print ""
