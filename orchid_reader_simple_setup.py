@@ -377,8 +377,13 @@ def get_file_header_data(fname):
     # open as binary
     in_file = open(fname, 'rb')
     # check for that strange buffer header at beginning of file bug
-    if ((size - FILE_HEADER_SIZE) % BUFFER_SIZE) != 0:
-        in_file.seek(8192)
+    if ((size - FILE_HEADER_SIZE) % BUFFER_SIZE) == 8192:
+        rawdata = in_file.read(4)
+        startInt =  struct.unpack("<I", rawdata[0:])
+        if startInt == 0xf0f0f0f0:
+            in_file.seek(8192)
+        else:
+            in_file.seek(0, 0)
     # read the first 164 bytes
     rawdata = in_file.read(164)
     in_file.close()
