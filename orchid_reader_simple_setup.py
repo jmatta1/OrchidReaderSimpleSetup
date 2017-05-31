@@ -406,8 +406,8 @@ def get_file_header_data(fname):
     in_file.seek((last_buf_offset + 24), 0)
     rawdata = in_file.read(8)
     # first calculate the location of the last buffer
-    mod_time = datetime.datetime.fromtimestamp(struct.unpack("<q",
-                                                             rawdata[0:]))
+    timestamp = float(struct.unpack("<q", rawdata[0:]))/1000000.0
+    mod_time = datetime.datetime.fromtimestamp(timestamp)
     in_file.close()
     # return everything
     return (date, run_name, run_num, seq_num, mod_time)
