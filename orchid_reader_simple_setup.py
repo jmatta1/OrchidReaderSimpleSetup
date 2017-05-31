@@ -403,12 +403,12 @@ def get_file_header_data(fname):
     run_num, seq_num = struct.unpack("<II", rawdata[156:])
     # get the last buffer end time
     # seek to last buffer start + 24 bytes (so we point at last end buff time)
-    in_file.seek((last_buf_offset + 24), 0)
-    rawdata = in_file.read(8)
+    in_file.seek((last_buf_offset), 0)
+    rawdata = in_file.read(32)
     for elem in rawdata:
         print elem.encode("hex")
     # first calculate the location of the last buffer
-    temp = struct.unpack("<q", rawdata[0:])[0]
+    temp = struct.unpack("<q", rawdata[24:])[0]
     print temp
     print '0x{:02x}'.format(temp)
     timestamp = float(temp)/1000000.0
