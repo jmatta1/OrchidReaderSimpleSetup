@@ -394,6 +394,13 @@ def get_file_header_data(fname):
     # now last_buf_offset should point to the start of the last buffer
     # read the first 164 bytes
     rawdata = in_file.read(164)
+    # convert the raw date string in the header
+    temp_date = rawdata[26:56].strip('\x00')
+    date = datetime.datetime.strptime(temp_date, "%Y-%m-%dT%H:%M:%S.%f")
+    # convert the raw run name in the header
+    run_name = rawdata[56:156].strip('\x00')
+    # convert the raw run and seq numbers in the header
+    run_num, seq_num = struct.unpack("<II", rawdata[156:])
     # get the last buffer end time
     # seek to last buffer start + 24 bytes (so we point at last end buff time)
     in_file.seek((last_buf_offset + 24), 0)
@@ -402,14 +409,6 @@ def get_file_header_data(fname):
     mod_time = datetime.datetime.fromtimestamp(struct.unpack("<q",
                                                              rawdata[0:]))
     in_file.close()
-    # convert the raw date string in the header
-    temp_date = rawdata[26:56].strip('\x00')
-    date = datetime.datetime.strptime(temp_date, "%Y-%m-%dT%H:%M:%S.%f")
-    # convert the raw run name in the header
-    run_name = rawdata[56:156].strip('\x00')
-    # convert the raw run and seq numbers in the header
-    run_num, seq_num = struct.unpack("<II", rawdata[156:])
-    
     # return everything
     return (date, run_name, run_num, seq_num, mod_time)
 
