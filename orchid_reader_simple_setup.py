@@ -397,7 +397,7 @@ def get_file_header_data(fname):
     # get the last buffer end time
     # seek to last buffer start + 24 bytes (so we point at last end buff time)
     in_file.seek((last_buf_offset + 24), 0)
-    raw_data = in_file.read(8)
+    rawdata = in_file.read(8)
     # first calculate the location of the last buffer
     mod_time = datetime.datetime.fromtimestamp(struct.unpack("<q",
                                                              rawdata[0:]))
