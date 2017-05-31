@@ -372,19 +372,35 @@ def get_file_header_data(fname):
     """
     # first figure out what the file size is
     size = os.path.getsize(fname)
-    # get the last modification time
-    mod_time = datetime.datetime.fromtimestamp(os.path.getmtime(fname))
     # open as binary
     in_file = open(fname, 'rb')
     # check for that strange buffer header at beginning of file bug
-    if ((size - FILE_HEADER_SIZE) % BUFFER_SIZE) == 8192:
+    remainder = ((size - FILE_HEADER_SIZE) % BUFFER_SIZE)
+    last_buf_offset = 0
+    # check for strange buffer header at beginning of file
+    if remainder >= 8192:
         rawdata = in_file.read(4)
         startInt =  struct.unpack("<I", rawdata[0:])
         in_file.seek(0, 0)
         if startInt == 0xf0f0f0f0:
+            last_buf_offset += 8192
             in_file.seek(8192, 0)
+    # check if the excess size has been accounted for, if not, assume that
+    # there is also a broken buffer at the end
+    if remainder != last_buf_offset:
+        num_buffers = ((size - FILE_HEADER_SIZE - remainder) / BUFFER_SIZE)
+        last_buf_offset += FILE_HEADER_SIZE
+        last_buf_offset += (BUFFER_SIZE * (num_buffers-1))
+    # now last_buf_offset should point to the start of the last buffer
     # read the first 164 bytes
     rawdata = in_file.read(164)
+    # get the last buffer end time
+    # seek to last buffer start + 24 bytes (so we point at last end buff time)
+    in_file.seek((last_buf_offset + 24), 0)
+    raw_data = in_file.read(8)
+    # first calculate the location of the last buffer
+    mod_time = datetime.datetime.fromtimestamp(struct.unpack("<q",
+                                                             rawdata[0:]))
     in_file.close()
     # convert the raw date string in the header
     temp_date = rawdata[26:56].strip('\x00')
@@ -393,6 +409,7 @@ def get_file_header_data(fname):
     run_name = rawdata[56:156].strip('\x00')
     # convert the raw run and seq numbers in the header
     run_num, seq_num = struct.unpack("<II", rawdata[156:])
+    
     # return everything
     return (date, run_name, run_num, seq_num, mod_time)
 
