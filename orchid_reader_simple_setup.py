@@ -380,8 +380,7 @@ def get_file_header_data(fname):
     # check for strange buffer header at beginning of file
     if remainder >= 8192:
         rawdata = in_file.read(4)
-        startInt =  struct.unpack("<I", rawdata[0:])
-        print startInt
+        startInt =  struct.unpack("<I", rawdata[0:])[0]
         in_file.seek(0, 0)
         if startInt == 0xf0f0f0f0:
             last_buf_offset += 8192
@@ -409,7 +408,7 @@ def get_file_header_data(fname):
     for elem in rawdata:
         print elem.encode("hex")
     # first calculate the location of the last buffer
-    temp = struct.unpack("<q", rawdata[0:])
+    temp = struct.unpack("<q", rawdata[0:])[0]
     print temp
     print '0x{:02x}'.format(temp)
     timestamp = float(temp)/1000000.0
