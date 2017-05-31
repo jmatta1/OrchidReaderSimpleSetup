@@ -408,7 +408,11 @@ def get_file_header_data(fname):
     for elem in rawdata:
         print elem.encode("hex")
     # first calculate the location of the last buffer
-    timestamp = float(struct.unpack("<q", rawdata[0:]))/1000000.0
+    temp = struct.unpack("<q", rawdata[0:])
+    print temp
+    print '0x{:02x}'.format(temp)
+    timestamp = float(temp)/1000000.0
+    print timestamp
     mod_time = datetime.datetime.fromtimestamp(timestamp)
     in_file.close()
     # return everything
