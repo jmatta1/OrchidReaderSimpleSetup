@@ -381,6 +381,7 @@ def get_file_header_data(fname):
     if remainder >= 8192:
         rawdata = in_file.read(4)
         startInt =  struct.unpack("<I", rawdata[0:])
+        print startInt
         in_file.seek(0, 0)
         if startInt == 0xf0f0f0f0:
             last_buf_offset += 8192
