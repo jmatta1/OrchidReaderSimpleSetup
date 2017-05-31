@@ -387,10 +387,9 @@ def get_file_header_data(fname):
             in_file.seek(8192, 0)
     # check if the excess size has been accounted for, if not, assume that
     # there is also a broken buffer at the end
-    if remainder != last_buf_offset:
-        num_buffers = ((size - FILE_HEADER_SIZE - remainder) / BUFFER_SIZE)
-        last_buf_offset += FILE_HEADER_SIZE
-        last_buf_offset += (BUFFER_SIZE * (num_buffers-1))
+    num_buffers = ((size - FILE_HEADER_SIZE - remainder) / BUFFER_SIZE)
+    last_buf_offset += FILE_HEADER_SIZE
+    last_buf_offset += (BUFFER_SIZE * (num_buffers-1))
     # now last_buf_offset should point to the start of the last buffer
     # read the first 164 bytes
     rawdata = in_file.read(164)
