@@ -205,6 +205,7 @@ def write_file_list(out_name, files):
     outfile.write("{0:s}".format(files[0][0]))
     for fdat in files[1:]:
         outfile.write("\n{0:s}".format(fdat[0]))
+    outfile.write("\n")
 
 
 def get_proc_folders(outdir, sub_batches, batch_name):
