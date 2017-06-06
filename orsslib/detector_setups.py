@@ -34,12 +34,12 @@ TMP.change_params(connect=((0, 4), (1, 4)), pos=(3.5, 70.0, 38.0))
 DEFAULT_SETUP.add_detector(4, copy.deepcopy(TMP))
 TMP.change_params(connect=((0, 5), (1, 5)), pos=(3.5, 9.0, 38.0))
 DEFAULT_SETUP.add_detector(5, copy.deepcopy(TMP))
-# Create a helium detector as moderated, add it, then modify it into the
-# unmoderated helium detector and add that as well
-TMP = DetectorSetup(((0, 6), (0, 0)), (0.0, 39.0, 75.0), "HeMod", (65532, 1.0))
+# Create a helium detector as unmoderated, add it, then modify it into the
+# moderated helium detector and add that as well
+TMP = DetectorSetup(((0, 6), (0, 1)), (0.0, 39.0, 75.0), "HeUnmod", (65532, 1.0))
 DEFAULT_SETUP.add_detector(6, copy.deepcopy(TMP))
-TMP.change_params(connect=((0, 7), (0, 1)), pos=(0.0, 39.0, 50.0))
-TMP.change_type("HeUnmod")
+TMP.change_params(connect=((0, 7), (0, 0)), pos=(0.0, 39.0, 50.0))
+TMP.change_type("HeMod")
 DEFAULT_SETUP.add_detector(7, copy.deepcopy(TMP))
 # create a Sodium Iodide detector, add it, then modify it and add it again 7
 # times to create all 8 NaI detectors
@@ -120,13 +120,13 @@ TMP.change_params(connect=((0, 4), (1, 4)), pos=(3.5, 70.0, 38.0))
 CEBR_SETUP.add_detector(4, copy.deepcopy(TMP))
 TMP.change_params(connect=((0, 5), (1, 5)), pos=(3.5, 9.0, 38.0))
 CEBR_SETUP.add_detector(5, copy.deepcopy(TMP))
-# Create a helium detector as moderated, add it, then modify it into the
-# unmoderated helium detector and add that as well
-TMP = DetectorSetup(((0, 6), (0, 0)), (0.0, 39.0, 75.0), "HeMod", (65532, 1.0))
-CEBR_SETUP.add_detector(6, copy.deepcopy(TMP))
-TMP.change_params(connect=((0, 7), (0, 1)), pos=(0.0, 39.0, 50.0))
-TMP.change_type("HeUnmod")
-CEBR_SETUP.add_detector(7, copy.deepcopy(TMP))
+# Create a helium detector as unmoderated, add it, then modify it into the
+# moderated helium detector and add that as well
+TMP = DetectorSetup(((0, 6), (0, 1)), (0.0, 39.0, 75.0), "HeUnmod", (65532, 1.0))
+DEFAULT_SETUP.add_detector(6, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 7), (0, 0)), pos=(0.0, 39.0, 50.0))
+TMP.change_type("HeMod")
+DEFAULT_SETUP.add_detector(7, copy.deepcopy(TMP))
 # create a Sodium Iodide detector, add it, then modify it and add it again 7
 # times to create all 8 NaI detectors
 TMP = DetectorSetup(((0, 8), (0, 8)), (0.0, 68.0, 81.0), "NaI", (65532, 1.0))
@@ -145,3 +145,44 @@ TMP.change_params(connect=((0, 14), (0, 14)), pos=(0.0, 68.0, 11.0))
 CEBR_SETUP.add_detector(14, copy.deepcopy(TMP))
 TMP.change_params(connect=((0, 15), (0, 15)), pos=(0.0, 11.0, 11.0))
 CEBR_SETUP.add_detector(15, copy.deepcopy(TMP))
+
+###############################################################################
+# ***Single, moderated helium tube setup
+###############################################################################
+# define the no helium tube setup that existed mid september 2016 for 2 weeks
+MOD_HE_SETUP = ArraySetup()
+# Create a liquid scintillator detector, add it, and then use modify add to
+# add the other 5 liquid scintillator detectors
+TMP = DetectorSetup(((0, 0), (1, 0)), (3.5, 70.0, 73.0), "LS", (65532, 1.0))
+MOD_HE_SETUP.add_detector(0, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 1), (1, 1)), pos=(3.5, 9.0, 73.0))
+MOD_HE_SETUP.add_detector(1, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 2), (1, 2)), pos=(3.5, 70.0, 60.0))
+MOD_HE_SETUP.add_detector(2, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 3), (1, 3)), pos=(3.5, 9.0, 60.0))
+MOD_HE_SETUP.add_detector(3, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 4), (1, 4)), pos=(3.5, 70.0, 38.0))
+MOD_HE_SETUP.add_detector(4, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 5), (1, 5)), pos=(3.5, 9.0, 38.0))
+MOD_HE_SETUP.add_detector(5, copy.deepcopy(TMP))
+# Create a helium detector as unmoderated and add it
+TMP = DetectorSetup(((0, 7), (0, 0)), (0.0, 39.0, 50.0), "HeMod", (65532, 1.0))
+CEBR_SETUP.add_detector(7, copy.deepcopy(TMP))
+# create a Sodium Iodide detector, add it, then modify it and add it again 7
+# times to create all 8 NaI detectors
+TMP = DetectorSetup(((0, 8), (0, 8)), (0.0, 68.0, 81.0), "NaI", (65532, 1.0))
+MOD_HE_SETUP.add_detector(8, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 9), (0, 9)), pos=(0.0, 11.0, 81.0))
+MOD_HE_SETUP.add_detector(9, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 10), (0, 10)), pos=(0.0, 68.0, 55.0))
+MOD_HE_SETUP.add_detector(10, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 11), (0, 11)), pos=(0.0, 11.0, 55.0))
+MOD_HE_SETUP.add_detector(11, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 12), (0, 12)), pos=(0.0, 68.0, 33.0))
+MOD_HE_SETUP.add_detector(12, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 13), (0, 13)), pos=(0.0, 11.0, 33.0))
+MOD_HE_SETUP.add_detector(13, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 14), (0, 14)), pos=(0.0, 68.0, 11.0))
+MOD_HE_SETUP.add_detector(14, copy.deepcopy(TMP))
+TMP.change_params(connect=((0, 15), (0, 15)), pos=(0.0, 11.0, 11.0))
+MOD_HE_SETUP.add_detector(15, copy.deepcopy(TMP))
