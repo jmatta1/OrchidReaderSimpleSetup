@@ -167,7 +167,7 @@ TMP.change_params(connect=((0, 5), (1, 5)), pos=(3.5, 9.0, 38.0))
 MOD_HE_SETUP.add_detector(5, copy.deepcopy(TMP))
 # Create a helium detector as unmoderated and add it
 TMP = DetectorSetup(((0, 7), (0, 0)), (0.0, 39.0, 50.0), "HeMod", (65532, 1.0))
-CEBR_SETUP.add_detector(7, copy.deepcopy(TMP))
+MOD_HE_SETUP_SETUP.add_detector(7, copy.deepcopy(TMP))
 # create a Sodium Iodide detector, add it, then modify it and add it again 7
 # times to create all 8 NaI detectors
 TMP = DetectorSetup(((0, 8), (0, 8)), (0.0, 68.0, 81.0), "NaI", (65532, 1.0))
