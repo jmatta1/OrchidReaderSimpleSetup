@@ -149,7 +149,7 @@ CEBR_SETUP.add_detector(15, copy.deepcopy(TMP))
 ###############################################################################
 # ***Single, moderated helium tube setup
 ###############################################################################
-# define the no helium tube setup that existed mid september 2016 for 2 weeks
+# define the 1 mod helium tube setup that existed early June 2017 for a week
 MOD_HE_SETUP = ArraySetup()
 # Create a liquid scintillator detector, add it, and then use modify add to
 # add the other 5 liquid scintillator detectors
