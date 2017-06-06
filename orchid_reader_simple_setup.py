@@ -373,6 +373,9 @@ def get_file_header_data(fname):
     """
     # first figure out what the file size is
     size = os.path.getsize(fname)
+    if size < 2101248:
+        print "Invalid file, it has a size < 1 Buffer plus a file header"
+        print fname
     # open as binary
     in_file = open(fname, 'rb')
     # check for that strange buffer header at beginning of file bug
