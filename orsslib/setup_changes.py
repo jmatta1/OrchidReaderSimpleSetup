@@ -21,7 +21,9 @@ NO_HE_RUN_PATTERNS = ["Sept14_0000.dat", "Sept14_0001.dat", "Sept14_0002.dat",
 
 # list of the file name patterns that are contained in all the files that have
 # data from the time that only the moderated 3He tube was present
-MOD_HE_RUN_PATTERNS = ["Jun05_2017_0001.dat", "Jun06_2017_0000.dat"]
+MOD_HE_RUN_PATTERNS = ["Jun05_2017_0001.dat", "Jun06_2017_0000.dat",
+                       "Jun07_2017_0000.dat", "Jun09_2017_0000.dat",
+                       "Jun12_2017_0000.dat"]
 
 # list of detector setups for convenient access
 EXCEPTION_DATA = [ds.DEFAULT_SETUP, ds.CEBR_SETUP, ds.NO_HE_SETUP,
