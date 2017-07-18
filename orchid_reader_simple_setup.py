@@ -414,10 +414,8 @@ def get_file_header_data(fname):
         if first == 527:
             # get the timestamp
             lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
-            print hitime
-            print lotime
             first_ts = ((hitime << 31) + lotime)
-            print first_ts
+            print fname, "|", "{0:x}".format(hitime), "|", "{0:x}".format(lotime), "|", "{0:x}".format(first_ts)
         else:
             ind += first
     # get the last buffer end time
