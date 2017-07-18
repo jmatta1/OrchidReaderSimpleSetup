@@ -415,10 +415,8 @@ def get_file_header_data(fname):
             # get the timestamp
             lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
             first_ts = ((hitime << 31) + lotime)
-            print fname, "|", "{0:x}".format(hitime), "|", "{0:x}".format(lotime), "|", "{0:x}".format(first_ts)
         else:
             ind += first
-            print "Incrementing ind by:", first
     # get the last buffer end time
     # seek to last buffer start + 24 bytes (so we point at last end buff time)
     in_file.seek((last_buf_offset), 0)
@@ -426,6 +424,20 @@ def get_file_header_data(fname):
     # first calculate the location of the last buffer
     timestamp = float(struct.unpack("<q", rawdata[24:])[0])/1000000.0
     mod_time = datetime.datetime.fromtimestamp(timestamp)
+    in_file.seek(8160, 1)
+    rawdata = in_file.read(2088960)
+    ind = 0
+    last_ts = -1
+    end = False
+    while not end and ind < 2088958:
+        first, second = struct.unpack("<BB", rawdata[ind:ind+2])[0]
+        if first == 0x0f and second == 0x02:
+            lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
+            last_ts = ((hitime << 31) + lotime)
+            print fname, " last:", last_ts
+        elif first == 0 and second = 0:
+            end = True
+        ind += first
     in_file.close()
     # return everything
     return (date, run_name, run_num, seq_num, mod_time)
