@@ -440,6 +440,8 @@ def get_file_header_data(fname):
             end = True
             ind = 2088958
             break;
+        else:
+            first += (second << 8)
         ind += first
     print fname, " true last:", last_ts
     in_file.close()
