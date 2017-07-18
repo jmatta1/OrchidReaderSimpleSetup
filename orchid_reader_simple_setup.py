@@ -28,6 +28,9 @@ def main():
     # get the list of files and their header info
     print "Getting header info"
     file_list = get_and_sort_file_list(indir)
+    for elem in file_list:
+        print elem
+    sys.exit()
     # now try to figure out where splits need to happen
     sub_batches = split_into_subbatches(file_list)
     # now ask users if they agree with the detector setups configured
@@ -431,22 +434,18 @@ def get_file_header_data(fname):
     end = False
     while not end and ind < 2088958:
         first, second = struct.unpack("<BB", rawdata[ind:ind+2])
-        print "Loop:", first, second, end, ind
         if first == 0x0f and second == 0x02:
             lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
             last_ts = ((hitime << 31) + lotime)
-            print fname, " last:", last_ts
         elif first == 0 and second == 0:
             end = True
-            ind = 2088958
             break;
         else:
             first += (second << 8)
         ind += first
-    print fname, " true last:", last_ts
     in_file.close()
     # return everything
-    return (date, run_name, run_num, seq_num, mod_time)
+    return (date, run_name, run_num, seq_num, mod_time, first_ts, last_ts)
 
 
 def read_cmdline():
