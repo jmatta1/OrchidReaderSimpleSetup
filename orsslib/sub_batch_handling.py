@@ -3,6 +3,9 @@ that need special handling to be addressed"""
 import orsslib.position_changes as pc
 import orsslib.setup_changes as sc
 
+MIN_TS_THRESH = 140737488355
+MAX_TS_THRESH = 140596750866972
+
 
 def split_sub_batches_det_setup(file_list):
     """Takes a file_list and splits runs if they contain the patterns
@@ -39,7 +42,7 @@ def split_sub_batches_det_setup(file_list):
         # check if the file before this one was a different det setup
         if curr_det == prev_det:
             curr_batch.append((dat[0], dat[1][0], dat[1][1], dat[1][2],
-                               dat[1][3], dat[1][4]))
+                               dat[1][3], dat[1][4], dat[1][5], dat[1][6]))
         else:
             if len(curr_batch) > 0:
                 batch_sets.append((curr_batch, (prev_name,
@@ -47,7 +50,7 @@ def split_sub_batches_det_setup(file_list):
             prev_det = curr_det
             prev_name = curr_name
             curr_batch = [(dat[0], dat[1][0], dat[1][1], dat[1][2], dat[1][3],
-                           dat[1][4])]
+                           dat[1][4], dat[1][5], dat[1][6])]
     # we have made it through the list of files, append the last batch with
     # the guessed detector setup
     batch_sets.append((curr_batch, (curr_name, sc.EXCEPTION_DATA[curr_det])))
@@ -82,8 +85,18 @@ def split_sub_batches_time(sub_batches, threshold):
         prev_time = file_list[0][5]
         first_time = file_list[0][1]
         last_time = file_list[0][5]
+        prev_ts = file_list[0][7]
+        count = 0
         for fdat in file_list:
-            if (fdat[1]-prev_time).total_seconds() <= threshold:
+            maintain_batch = True
+            # determine if the batch needs to be broken
+            if (fdat[1]-prev_time).total_seconds() > threshold:
+                maintain_batch = False
+            if count != 0 and fdat[6] < prev_ts:
+                if not (prev_ts > MAX_TS_THRESH and fdat[6] < MIN_TS_THRESH):
+                    maintain_batch = False
+            # break the batch if need be
+            if maintain_batch:
                 curr_batch.append(fdat)
                 last_time = fdat[5]
             else:
@@ -91,7 +104,9 @@ def split_sub_batches_time(sub_batches, threshold):
                 first_time = fdat[1]
                 last_time = fdat[5]
                 curr_batch = [fdat]
+            prev_ts = fdat[7]
             prev_time = fdat[5]
+            count += 1
         batch_sets.append((curr_batch, setup, (first_time, last_time)))
     return batch_sets
 
