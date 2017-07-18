@@ -57,7 +57,9 @@ def split_sub_batches_det_setup(file_list):
 def split_sub_batches_time(sub_batches, threshold):
     """Takes a set of sub batches and splits them further runs if they contain
     time differences between the beginning of a file and the end of a previous
-    file greater than threshold
+    file greater than threshold, also checks for new runs from digitizer
+    timestamp resets using a heuristic and breaks the run if there is a
+    timestamp reset that is not due to running past the end of ~281000 seconds
 
     Parameters
     ----------
