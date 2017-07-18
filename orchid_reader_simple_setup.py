@@ -406,7 +406,7 @@ def get_file_header_data(fname):
     run_num, seq_num = struct.unpack("<II", rawdata[156:])
     # now read the first DppPsd event of the first buffer and get its timestamp
     in_file.seek(12124, 1)  # skip remainder of file header and buffer header
-    rawdata = in_file.read(8192)
+    rawdata = in_file.read(16384)
     first_ts = -1
     ind = 0
     while first_ts == -1:
@@ -418,6 +418,7 @@ def get_file_header_data(fname):
             print fname, "|", "{0:x}".format(hitime), "|", "{0:x}".format(lotime), "|", "{0:x}".format(first_ts)
         else:
             ind += first
+            print "Incrementing ind by:", first
     # get the last buffer end time
     # seek to last buffer start + 24 bytes (so we point at last end buff time)
     in_file.seek((last_buf_offset), 0)
