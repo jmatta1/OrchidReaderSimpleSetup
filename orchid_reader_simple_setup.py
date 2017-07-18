@@ -28,9 +28,6 @@ def main():
     # get the list of files and their header info
     print "Getting header & timestamp info"
     file_list = get_and_sort_file_list(indir)
-    for elem in file_list:
-        print elem
-    sys.exit()
     # now try to figure out where splits need to happen
     sub_batches = split_into_subbatches(file_list)
     # now ask users if they agree with the detector setups configured
@@ -373,6 +370,10 @@ def get_file_header_data(fname):
         The file sequence number as stated by the file header
     mod_time: datetime.datetime object
         The date of last modification given by the OS
+    first_ts : int
+        The timestamp of the first event in the first buffer of the file
+    last_ts : int
+        The timestamp of the last event in the last buffer of the file
     """
     # first figure out what the file size is
     size = os.path.getsize(fname)
