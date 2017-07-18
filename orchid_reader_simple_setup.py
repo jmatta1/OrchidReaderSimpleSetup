@@ -430,14 +430,16 @@ def get_file_header_data(fname):
     last_ts = -1
     end = False
     while not end and ind < 2088958:
-        first, second = struct.unpack("<BB", rawdata[ind:ind+2])[0]
+        first, second = struct.unpack("<BB", rawdata[ind:ind+2])
         if first == 0x0f and second == 0x02:
             lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
             last_ts = ((hitime << 31) + lotime)
             print fname, " last:", last_ts
-        elif first == 0 and second = 0:
+        elif first == 0 and second == 0:
             end = True
+            ind = 2088958
         ind += first
+    print fname, " true last:", last_ts
     in_file.close()
     # return everything
     return (date, run_name, run_num, seq_num, mod_time)
