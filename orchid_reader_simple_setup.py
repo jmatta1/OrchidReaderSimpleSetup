@@ -384,9 +384,9 @@ def get_file_header_data(fname):
     # check for strange buffer header at beginning of file
     if remainder >= 8192:
         rawdata = in_file.read(4)
-        startInt =  struct.unpack("<I", rawdata[0:])[0]
+        start_int = struct.unpack("<I", rawdata[0:])[0]
         in_file.seek(0, 0)
-        if startInt == 0xf0f0f0f0:
+        if start_int == 0xf0f0f0f0:
             last_buf_offset += 8192
             in_file.seek(8192, 0)
     # check if the excess size has been accounted for, if not, assume that
@@ -398,12 +398,28 @@ def get_file_header_data(fname):
     # read the first 164 bytes
     rawdata = in_file.read(164)
     # convert the raw date string in the header
-    temp_date = rawdata[26:56].strip('\x00')
-    date = datetime.datetime.strptime(temp_date, "%Y-%m-%dT%H:%M:%S.%f")
+    date = datetime.datetime.strptime(rawdata[26:56].strip('\x00'),
+                                      "%Y-%m-%dT%H:%M:%S.%f")
     # convert the raw run name in the header
     run_name = rawdata[56:156].strip('\x00')
     # convert the raw run and seq numbers in the header
     run_num, seq_num = struct.unpack("<II", rawdata[156:])
+    # now read the first DppPsd event of the first buffer and get its timestamp
+    in_file.seek(12124, 1)  # skip remainder of file header and buffer header
+    rawdata = in_file.read(8192)
+    first_ts = -1
+    ind = 0
+    while first_ts == -1:
+        first = struct.unpack("<H", rawdata[ind:ind+2])[0]
+        if first == 527:
+            # get the timestamp
+            lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
+            print hitime
+            print lotime
+            first_ts = ((hitime << 31) + lotime)
+            print first_ts
+        else:
+            ind += first
     # get the last buffer end time
     # seek to last buffer start + 24 bytes (so we point at last end buff time)
     in_file.seek((last_buf_offset), 0)
