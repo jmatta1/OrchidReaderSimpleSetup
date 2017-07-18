@@ -26,7 +26,7 @@ def main():
     print "\nIf this is incorrect use 'Ctrl+C' to stop execution"
     raw_input("Press Enter to continue...")
     # get the list of files and their header info
-    print "Getting header info"
+    print "Getting header & timestamp info"
     file_list = get_and_sort_file_list(indir)
     for elem in file_list:
         print elem
@@ -398,35 +398,33 @@ def get_file_header_data(fname):
     last_buf_offset += FILE_HEADER_SIZE
     last_buf_offset += (BUFFER_SIZE * (num_buffers-1))
     # now last_buf_offset should point to the start of the last buffer
-    # read the first 164 bytes
-    rawdata = in_file.read(164)
-    # convert the raw date string in the header
-    date = datetime.datetime.strptime(rawdata[26:56].strip('\x00'),
-                                      "%Y-%m-%dT%H:%M:%S.%f")
-    # convert the raw run name in the header
-    run_name = rawdata[56:156].strip('\x00')
-    # convert the raw run and seq numbers in the header
-    run_num, seq_num = struct.unpack("<II", rawdata[156:])
+    # now read the information from the file header
+    date, run_name, run_num, seq_num = read_file_header_info(in_file)
     # now read the first DppPsd event of the first buffer and get its timestamp
-    in_file.seek(12124, 1)  # skip remainder of file header and buffer header
-    rawdata = in_file.read(16384)
-    first_ts = -1
-    ind = 0
-    while first_ts == -1:
-        first = struct.unpack("<H", rawdata[ind:ind+2])[0]
-        if first == 527:
-            # get the timestamp
-            lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
-            first_ts = ((hitime << 31) + lotime)
-        else:
-            ind += first
+    first_ts = read_first_time_stamp(in_file)
     # get the last buffer end time
-    # seek to last buffer start + 24 bytes (so we point at last end buff time)
-    in_file.seek((last_buf_offset), 0)
-    rawdata = in_file.read(32)
-    # first calculate the location of the last buffer
-    timestamp = float(struct.unpack("<q", rawdata[24:])[0])/1000000.0
-    mod_time = datetime.datetime.fromtimestamp(timestamp)
+    mod_time = read_last_buffer_end(in_file, last_buf_offset)
+    # read the last DppPsd event of the last buffer and get its timestamp
+    last_ts = read_last_time_stamp(in_file)
+    in_file.close()
+    # return everything
+    return (date, run_name, run_num, seq_num, mod_time, first_ts, last_ts)
+
+
+def read_last_time_stamp(in_file):
+    """Reads the last digitizer event's timestamp in the last buffer of the
+    file
+
+    Parameters
+    ----------
+    in_file : file object
+        The file object for the opened data file
+
+    Returns
+    -------
+    last_ts : int
+        the time stamp associated with the last event of the last file buffer
+    """
     in_file.seek(8160, 1)
     rawdata = in_file.read(2088960)
     ind = 0
@@ -439,13 +437,94 @@ def get_file_header_data(fname):
             last_ts = ((hitime << 31) + lotime)
         elif first == 0 and second == 0:
             end = True
-            break;
+            break
         else:
             first += (second << 8)
         ind += first
-    in_file.close()
-    # return everything
-    return (date, run_name, run_num, seq_num, mod_time, first_ts, last_ts)
+    return last_ts
+
+
+def read_last_buffer_end(in_file, last_buf_offset):
+    """Reads the final modification time of the last buffer in the file
+
+     Parameters
+    ----------
+    in_file : file object
+        The file object for the opened data file
+    last_buf_offset : int
+        The offset in bytes of the start of the last buffer in the file
+
+    Returns
+    -------
+    mod_time : datetime.datetime
+        the last modification time of the file by ORCHID
+    """
+    # seek to last buffer start + 24 bytes (so we point at last end buff time)
+    in_file.seek((last_buf_offset), 0)
+    rawdata = in_file.read(32)
+    # first calculate the location of the last buffer
+    timestamp = float(struct.unpack("<q", rawdata[24:])[0])/1000000.0
+    return datetime.datetime.fromtimestamp(timestamp)
+
+
+def read_first_time_stamp(in_file):
+    """Reads the first digitizer event's timestamp in the first buffer of the
+    file
+
+    Parameters
+    ----------
+    in_file : file object
+        The file object for the opened data file
+
+    Returns
+    -------
+    first_ts : int
+        the time stamp associated with the first event of the first file buffer
+    """
+    in_file.seek(12124, 1)  # skip remainder of file header and buffer header
+    rawdata = in_file.read(16384)
+    first_ts = -1
+    ind = 0
+    while first_ts == -1:
+        first = struct.unpack("<H", rawdata[ind:ind+2])[0]
+        if first == 527:
+            # get the timestamp
+            lotime, hitime = struct.unpack("<IH", rawdata[ind+4:ind+10])
+            first_ts = ((hitime << 31) + lotime)
+        else:
+            ind += first
+    return first_ts
+
+
+def read_file_header_info(in_file):
+    """Reads the relevant information from the file header
+
+    Parameters
+    ----------
+    in_file : file object
+        The file object for the opened data file
+
+    Returns
+    -------
+    date : datetime.datetime
+        The datetime object representing the start of file writing
+    run_name : str
+        The name of the run
+    run_num : int
+        The number of the run
+    seq_num : int
+        The sequence number of the file
+    """
+    # read the first 164 bytes
+    rawdata = in_file.read(164)
+    # convert the raw date string in the header
+    date = datetime.datetime.strptime(rawdata[26:56].strip('\x00'),
+                                      "%Y-%m-%dT%H:%M:%S.%f")
+    # convert the raw run name in the header
+    run_name = rawdata[56:156].strip('\x00')
+    # convert the raw run and seq numbers in the header
+    run_num, seq_num = struct.unpack("<II", rawdata[156:])
+    return (date, run_name, run_num, seq_num)
 
 
 def read_cmdline():
