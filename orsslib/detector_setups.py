@@ -36,7 +36,8 @@ TMP.change_params(connect=((0, 5), (1, 5)), pos=(3.5, 9.0, 38.0))
 DEFAULT_SETUP.add_detector(5, copy.deepcopy(TMP))
 # Create a helium detector as unmoderated, add it, then modify it into the
 # moderated helium detector and add that as well
-TMP = DetectorSetup(((0, 6), (0, 1)), (0.0, 39.0, 75.0), "HeUnmod", (65532, 1.0))
+TMP = DetectorSetup(((0, 6), (0, 1)), (0.0, 39.0, 75.0), "HeUnmod",
+                    (65532, 1.0))
 DEFAULT_SETUP.add_detector(6, copy.deepcopy(TMP))
 TMP.change_params(connect=((0, 7), (0, 0)), pos=(0.0, 39.0, 50.0))
 TMP.change_type("HeMod")
@@ -122,7 +123,8 @@ TMP.change_params(connect=((0, 5), (1, 5)), pos=(3.5, 9.0, 38.0))
 CEBR_SETUP.add_detector(5, copy.deepcopy(TMP))
 # Create a helium detector as unmoderated, add it, then modify it into the
 # moderated helium detector and add that as well
-TMP = DetectorSetup(((0, 6), (0, 1)), (0.0, 39.0, 75.0), "HeUnmod", (65532, 1.0))
+TMP = DetectorSetup(((0, 6), (0, 1)), (0.0, 39.0, 75.0), "HeUnmod",
+                    (65532, 1.0))
 DEFAULT_SETUP.add_detector(6, copy.deepcopy(TMP))
 TMP.change_params(connect=((0, 7), (0, 0)), pos=(0.0, 39.0, 50.0))
 TMP.change_type("HeMod")

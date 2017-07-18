@@ -33,4 +33,5 @@ EXCEPTION_DATA = [ds.DEFAULT_SETUP, ds.CEBR_SETUP, ds.NO_HE_SETUP,
 EXCEPTION_NAME = ["Default", "CeBr3", "No_3He", "Mod_3He"]
 
 # list of exception patterns in the same order as the det setups, minus default
-EXCEPTION_PATTERN = [CEBR_RUN_PATTERNS, NO_HE_RUN_PATTERNS,MOD_HE_RUN_PATTERNS]
+EXCEPTION_PATTERN = [CEBR_RUN_PATTERNS, NO_HE_RUN_PATTERNS,
+                     MOD_HE_RUN_PATTERNS]
