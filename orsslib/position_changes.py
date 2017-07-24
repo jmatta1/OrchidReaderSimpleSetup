@@ -32,8 +32,8 @@ MIF_WORK_PATTERNS = ["Jul11_2017_0000.dat", "Jul11_2017_0001.dat",
 
 # list of array positions for the time series runs, the last is currently
 # approximate
-EXCEPTION_DATA = [(142.0, 74.0), (234.0, 279.0), (165.0, -124.0),
-                  (142.0, 156.0), (234.0, 279.0)]
+EXCEPTION_DATA = [(142.0, 74.0), (240.0, 325.0), (165.0, -124.0),
+                  (142.0, 156.0), (240.0, 325.0)]
 
 # list of names for the array positions
 EXCEPTION_NAME = ["Default", "PastRxWall", "CloseToColdSrcCtrlRoom",
