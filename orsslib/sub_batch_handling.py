@@ -5,6 +5,7 @@ import orsslib.setup_changes as sc
 
 MIN_TS_THRESH = 140737488355
 MAX_TS_THRESH = 140596750866972
+TS_MISORDER_THRESH = 5000000000
 
 
 def split_sub_batches_det_setup(file_list):
@@ -92,7 +93,7 @@ def split_sub_batches_time(sub_batches, threshold):
             # determine if the batch needs to be broken
             if (fdat[1]-prev_time).total_seconds() > threshold:
                 maintain_batch = False
-            if count != 0 and fdat[6] < prev_ts:
+            if count != 0 and (fdat[6] + TS_MISORDER_THRESH) < prev_ts:
                 if not (prev_ts > MAX_TS_THRESH and fdat[6] < MIN_TS_THRESH):
                     maintain_batch = False
             # break the batch if need be
