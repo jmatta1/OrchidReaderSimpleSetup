@@ -30,15 +30,18 @@ MIF_WORK_PATTERNS = ["Jul11_2017_0000.dat", "Jul11_2017_0001.dat",
                      "Jul13_2017_0000.dat", "Jul14_2017_0000.dat",
                      "Jul18_2017_0000.dat"]
 
+SECOND_MAGNET_SCAN_PATTERN = ["Aug15_2017_moved_0000"]
+
 # list of array positions for the time series runs, the last is currently
 # approximate
 EXCEPTION_DATA = [(142.0, 74.0), (240.0, 305.0), (165.0, -124.0),
-                  (142.0, 156.0), (240.0, 305.0)]
+                  (142.0, 156.0), (240.0, 305.0), (135, 179)]
 
 # list of names for the array positions
 EXCEPTION_NAME = ["Default", "PastRxWall", "CloseToColdSrcCtrlRoom",
-                  "MovedForBFieldMeasurements", "MifBoxWork"]
+                  "MovedForBFieldMeasurements", "MifBoxWork", "MovedForMoreBFieldMeasurements"]
 
 # list of position exception patterns (deliberately sans the default)
 EXCEPTION_PATTERN = [PAST_RX_WALL_PATTERNS, SURVEYING_PATTERNS,
-                     MAGNET_SCAN_PATTERNS, MIF_WORK_PATTERNS]
+                     MAGNET_SCAN_PATTERNS, MIF_WORK_PATTERNS,
+                     SECOND_MAGENET_SCAN_PATTERN]
