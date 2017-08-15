@@ -44,4 +44,4 @@ EXCEPTION_NAME = ["Default", "PastRxWall", "CloseToColdSrcCtrlRoom",
 # list of position exception patterns (deliberately sans the default)
 EXCEPTION_PATTERN = [PAST_RX_WALL_PATTERNS, SURVEYING_PATTERNS,
                      MAGNET_SCAN_PATTERNS, MIF_WORK_PATTERNS,
-                     SECOND_MAGENET_SCAN_PATTERN]
+                     SECOND_MAGNET_SCAN_PATTERN]
