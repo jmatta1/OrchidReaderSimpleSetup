@@ -278,7 +278,8 @@ def check_sub_batch(batch, setup, times, pos):
     start_time = times[0].strftime("%Y-%m-%d %H:%M:%S.%f")
     stop_time = times[1].strftime("%Y-%m-%d %H:%M:%S.%f")
     print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
-                                stop_time, setup[0], pos[1][0], pos[1][1])
+                                stop_time, setup[0], pos[0],
+                                pos[1][0], pos[1][1])
     setup[1].print_array_setup()
     print ""
     ans = inp.get_yes_no("Do you wish to edit the array position",
@@ -690,16 +691,31 @@ ProcessFirstBuffer = True
 # this is the nominal number of seconds to integrate files for
 HistIntegrationTime=600.0
 
+# The channel buffer length needs to be long enough that the number of events
+# that are produced by the detector across the length of time that it takes for
+# the slowest detector pair to push a single buffer. Since the normal setup
+# has the maximum 1023 events per buffer and the slowest detector pair is the
+# two 3He detectors looking at the different detector configurations in both
+# reactor on and reactor off shows that the worst mismatch comes in reactor off
+# The main position had a combined 3He rate of 4.79 Hz. This gives 213.6 seconds
+# per 3He buffer. Padding buffers to handle the time required for 5 3He buffers
+# to arrive, gives, when checked across several cases, gives the following
+# buffer sizes, which should be plenty large enough since the system will only
+# try to get 4 3He buffers at a time
+BufferLength = [1275000, 1350000, 500000, 1500000, 950000, 1325000, 100000, 25000, 2775000, 6175000, 4325000, 4475000, 2025000, 2775000, 2050000, 2200000]
+
 [EndConfig]
 """
 
 
-SUB_BATCH_INFO = """First File: {0:s}
- Last File: {1:s}
-Start Time: {2:s}
-  End Time: {3:s}
-Setup Name: {4:s}
-  Position: X={5:4.1f}, Y={6:4.1f}
+SUB_BATCH_INFO = """    First File: {0:s}
+     Last File: {1:s}
+    Start Time: {2:s}
+      End Time: {3:s}
+Det Setup Name: {4:s}
+ Position Name: {5:s}
+      Position: X={6:4.1f}, Y={7:4.1f}
+
 Detector Setup:"""
 
 
