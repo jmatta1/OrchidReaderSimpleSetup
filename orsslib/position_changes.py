@@ -33,7 +33,7 @@ MIF_WORK_PATTERNS = ["*/Jul11_2017_0000.dat.*", "*/Jul11_2017_0001.dat.*",
 
 SECOND_MAGNET_SCAN_PATTERN = ["*/Aug15_2017_moved_0000.*"]
 
-NEW_DEFAULT_PATTERNS = ['*/Nov??_2017.*', '*/Dec??_2017.*', '*/Jan??_2018.*']
+NEW_DEFAULT_PATTERNS = ['*/Nov??_2017*', '*/Dec??_2017*', '*/Jan??_2018*']
 
 # list of array positions for the time series runs, the last is currently
 # approximate
