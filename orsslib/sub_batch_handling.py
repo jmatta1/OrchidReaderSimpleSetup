@@ -1,5 +1,6 @@
 """This file contains functions and global constants that allow known cases
 that need special handling to be addressed"""
+import fnmatch  # for file name pattern matching
 import orsslib.position_changes as pc
 import orsslib.setup_changes as sc
 
@@ -10,7 +11,8 @@ TS_MISORDER_THRESH = 5000000000
 
 def split_sub_batches_det_setup(file_list):
     """Takes a file_list and splits runs if they contain the patterns
-    defined above, also tries to guess detector setups from what is known
+    defined in setup_changes.py, also tries to guess detector setups from what
+    is known
 
     Parameters
     ----------
@@ -141,7 +143,8 @@ def split_sub_batches_position(sub_batches):
             for ind, patterns in enumerate(pc.EXCEPTION_PATTERN):
                 # check if this is a position exception run
                 for chk in patterns:
-                    if chk in fdat[0]:
+                    #if chk in fdat[0]:
+                    if fnmatch.fnmatch(fdat[0], chk)
                         curr_pos = ind + 1
                         curr_name = pc.EXCEPTION_NAME[ind + 1]
                         break
