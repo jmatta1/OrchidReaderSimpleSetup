@@ -144,7 +144,7 @@ def split_sub_batches_position(sub_batches):
                 # check if this is a position exception run
                 for chk in patterns:
                     #if chk in fdat[0]:
-                    if fnmatch.fnmatch(fdat[0], chk)
+                    if fnmatch.fnmatch(fdat[0], chk):
                         curr_pos = ind + 1
                         curr_name = pc.EXCEPTION_NAME[ind + 1]
                         break
