@@ -283,11 +283,11 @@ def check_sub_batch(batch, setup, times, pos):
                          default_value=False)
     while ans:
         xpos = inp.get_float("New X Position")
-        ypos = inp.get_float("New X Position")
+        ypos = inp.get_float("New Y Position")
         pos[1][0] = xpos
         pos[1][1] = ypos
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
-                                    stop_time, setup[0], pos[1][0], pos[1][1])
+                                    stop_time, setup[0], "Custom", pos[1][0], pos[1][1])
         setup[1].print_array_setup()
         ans = inp.get_yes_no("Do you wish to edit the array position",
                              default_value=False)
