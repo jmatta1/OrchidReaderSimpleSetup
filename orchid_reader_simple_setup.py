@@ -20,7 +20,6 @@ def main():
     """Entry point for the script"""
     indir, outdir = read_cmdline()
     _, batch_name = os.path.split(indir)
-    os.system("clear")
     print "Input Directory is:", indir
     print "Base Output Directory is:", outdir
     print "\nIf this is incorrect use 'Ctrl+C' to stop execution"
@@ -39,7 +38,6 @@ def main():
     # now create a small script that submits each of the queue scripts created
     sub_script_name = generate_sub_script(batch_files)
     os.system("chmod -R 774 {0:s}".format(sub_script_name))
-    os.system('clear')
     out_str = ("batches to run" if len(batch_files) == 0 else "batch to run")
     print "Created", len(batch_files), out_str
     for number, batch in enumerate(batch_files):
@@ -256,7 +254,6 @@ def check_sub_batch_info(sub_batches):
     for batch, setup, times, position in sub_batches:
         print DET_MOD_STR.format(count)
         check_sub_batch(batch, setup, times, position)
-        os.system('clear')
 
 
 def check_sub_batch(batch, setup, times, pos):
@@ -289,7 +286,6 @@ def check_sub_batch(batch, setup, times, pos):
         ypos = inp.get_float("New X Position")
         pos[1][0] = xpos
         pos[1][1] = ypos
-        os.system('clear')
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
                                     stop_time, setup[0], pos[1][0], pos[1][1])
         setup[1].print_array_setup()
@@ -299,7 +295,6 @@ def check_sub_batch(batch, setup, times, pos):
                          default_value=False)
     while ans:
         setup[1].get_array_changes()
-        os.system('clear')
         print SUB_BATCH_INFO.format(batch[0][0], batch[-1][0], start_time,
                                     stop_time, setup[0], pos[1][0], pos[1][1])
         setup[1].print_array_setup()

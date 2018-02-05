@@ -163,7 +163,6 @@ class DetectorSetup(object):
             temp.append((int(en_thresh), psd_thresh))
             det_setup = DetectorSetup((temp[0], temp[1]), temp[2], temp[3],
                                       temp[4])
-            os.system('clear')
             det_setup.print_self(detnum)
             if inp.get_yes_no("Is this correct", default_value=True):
                 return det_setup
@@ -246,17 +245,14 @@ class ArraySetup(object):
 
     def get_array_changes(self):
         """Asks the user for changes in the setup"""
-        os.system('clear')
         self.print_array_setup()
         print ""
         if inp.get_yes_no("Remove dets from the array", default_value=False):
             self.get_removed_dets()
-        os.system('clear')
         self.print_array_setup()
         print ""
         if inp.get_yes_no("Add dets to the array", default_value=False):
             self.get_added_dets()
-        os.system('clear')
         self.print_array_setup()
         print ""
         if inp.get_yes_no("Modify dets in the array", default_value=False):
@@ -266,7 +262,6 @@ class ArraySetup(object):
         """Asks the user to modify existing detectors"""
         ans = True
         while ans:
-            os.system('clear')
             self.print_array_setup()
             val = inp.get_int("Detector to modify")
             if val in self.det_dict:
@@ -280,7 +275,6 @@ class ArraySetup(object):
         """Asks the user to define new detectors"""
         ans = True
         while ans:
-            os.system('clear')
             self.print_array_setup()
             val = inp.get_int("New Detector Number")
             if val in self.det_dict:
@@ -294,7 +288,6 @@ class ArraySetup(object):
         """Asks the user which detectors to remove"""
         ans = True
         while ans:
-            os.system('clear')
             self.print_array_setup()
             val = inp.get_int("Detector Number to Remove")
             if val in self.det_dict:
